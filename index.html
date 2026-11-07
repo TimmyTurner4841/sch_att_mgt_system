@@ -1,121 +1,64 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Staff Attendance</title>
+<title>Redeemers Private School</title>
+<link rel="icon" href="logo.png">
 <style>
-*{box-sizing:border-box}body{margin:0;font:15px system-ui,sans-serif;background:#eef3fb;color:#14213d}
-header{background:#1e4fa3;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}
-header button{background:#fff;color:#1e4fa3;border:0;border-radius:6px;padding:6px 10px;font-weight:600}
-main,.box{max-width:720px;margin:0 auto;padding:12px}.box{padding-top:30px}
-h1{color:#1e4fa3;text-align:center;font-size:22px}h3{margin:0 0 8px;color:#1e4fa3}
-.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px #0001}
-input,select,textarea{width:100%;padding:11px;margin:5px 0;border:1px solid #c5d3ea;border-radius:8px;font:inherit;background:#fff}
-label{font-size:12px;color:#557}button{font:inherit;cursor:pointer}
-.pri{width:100%;background:#1e4fa3;color:#fff;border:0;border-radius:8px;padding:12px;font-weight:600;margin-top:6px}
-.tabs{display:flex;gap:6px;margin-bottom:10px}.tabs button{flex:1;padding:10px;border:1px solid #1e4fa3;background:#fff;color:#1e4fa3;border-radius:8px;font-weight:600}
-.tabs button.on{background:#1e4fa3;color:#fff}
-.clock{font-size:34px;font-weight:700;text-align:center;color:#1e4fa3}.st{text-align:center;margin:4px 0 12px}
-.big{width:100%;padding:26px;font-size:24px;font-weight:800;border:0;border-radius:14px;color:#fff;background:#999}
-.big.in{background:#1e4fa3}.big.out{background:#c0392b}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.c{background:#fff;border-radius:12px;padding:12px;text-align:center;font-size:12px;color:#557}.c b{display:block;font-size:28px;color:#1e4fa3}
-.row{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid #eef}small{display:block;color:#667;font-size:12px}
-.tag{font-style:normal;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;height:fit-content;text-transform:uppercase;background:#dde6f5;color:#1e4fa3}
-.present,.approved{background:#d8f3e0;color:#157a3c}.late,.pending{background:#fff0cf;color:#a66a00}.absent,.rejected{background:#fde0de;color:#b3261e}.leave{background:#dde6f5}
-.sc{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 6px;text-align:left;border-bottom:1px solid #eef;white-space:nowrap}th{color:#1e4fa3}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mini{padding:8px 12px;border:0;border-radius:6px;color:#fff;font-weight:600}
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#14213d;color:#fff;padding:10px 16px;border-radius:20px;display:none;z-index:9}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 system-ui,sans-serif;color:#14213d;background:#f4f7fc}
+a{color:#1e4fa3}header{background:#fff;border-bottom:3px solid #1e4fa3;position:sticky;top:0;z-index:5}
+.in{max-width:900px;margin:0 auto;padding:0 14px}.top{display:flex;align-items:center;gap:10px;padding:8px 0}
+.top img{height:48px}.top b{font-size:17px;color:#1e4fa3;line-height:1.15}.top small{display:block;color:#667;font-size:12px}
+.top .btn{margin:0 0 0 auto;padding:7px 10px;font-size:13px;white-space:nowrap}nav{display:flex;overflow-x:auto;gap:2px}nav a{padding:10px 14px;text-decoration:none;color:#14213d;font-weight:600;font-size:14px;white-space:nowrap;border-bottom:3px solid transparent}
+nav a.on{color:#1e4fa3;border-color:#1e4fa3}
+.hero{background:linear-gradient(135deg,#1e4fa3,#12306b);color:#fff;text-align:center;padding:36px 16px}
+.hero img{height:120px;background:#fff;border-radius:14px;padding:6px}.hero h1{margin:12px 0 4px;font-size:28px}.hero p{margin:0 0 16px;opacity:.9;font-style:italic}
+.btn{display:inline-block;background:#1e4fa3;color:#fff!important;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;margin:4px}
+.hero .btn{background:#fff;color:#1e4fa3!important}.hero .btn.g{background:#25d366;color:#fff!important}
+main{padding:18px 0 30px}h2{color:#1e4fa3;margin:22px 0 10px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 4px #0001;overflow:hidden}
+.card h3{margin:2px 0 6px;font-size:18px}.card small{color:#667}.pi{width:calc(100% + 28px);margin:-14px -14px 10px;max-height:220px;object-fit:cover}
+.body{white-space:pre-line;margin:6px 0}summary{cursor:pointer;color:#1e4fa3;font-weight:600}
+footer{background:#12306b;color:#cfe0ff;text-align:center;padding:18px;font-size:14px}footer a{color:#fff}
 </style></head><body>
-<div id="app"></div><div id="toast"></div>
+<header><div class=in><div class=top><img src=logo.png alt=""><div><b>Redeemers Private School</b><small>Knowledge and the Fear of God</small></div><a class=btn href="staff.html">🔒 Staff Portal</a></div>
+<nav id=nav></nav></div></header>
+<div id=app></div>
+<footer>© <span id=yr></span> Redeemers Private School · Opp. Iyakwari Hotel, Holiness Road, Ado, New Karu<br><a href="staff.html">Staff login</a></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
+// ====== SETTINGS: same two Supabase values as staff.html ======
 const URL_='https://lcipveuaxjiilvqymqob.supabase.co', KEY='sb_publishable_pOFn7CtPewesWKGpQUo6MA_o-MJ_tyZ';
-const DEPTS=['Teaching','Non-teaching'];
-const {createClient}=supabase, db=createClient(URL_,KEY), $=s=>document.querySelector(s), tz='Africa/Lagos';
-const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:tz});
-const tm=t=>t?new Date(t).toLocaleTimeString('en-NG',{timeZone:tz,hour:'2-digit',minute:'2-digit'}):'–';
-const em=i=>i.trim().toLowerCase().replace(/[^a-z0-9]/g,'-')+'@school-staff.app';
+const SOCIAL={Facebook:'',Instagram:''};   // add your page links, e.g. Facebook:'https://facebook.com/yourpage'
+// ==============================================================
+if(!/^https:\/\/.+\.supabase\.co/.test(URL_)||KEY.startsWith('PASTE')){document.body.innerHTML='<p style="padding:24px;font:16px system-ui"><b>Setup needed:</b> paste your Supabase URL and key into the settings lines at the top of this file (keep the quote marks), then upload it again.</p>';throw new Error('Supabase settings missing')}
+const {createClient}=supabase,db=createClient(URL_,KEY),$=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fd=e=>Object.fromEntries(new FormData(e.target));
-const render=h=>$('#app').innerHTML=h;
-let me,T,S=[],AT=[],LV=[],A={tab:'today',date:today(),q:'',dept:''};
-function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2800)}
-const hdr=t=>`<header><b>${esc(t)}</b><button onclick="logout()">Logout</button></header>`;
-async function logout(){await db.auth.signOut();me=null;authView()}
-async function init(){
-  const {data:{session}}=await db.auth.getSession();if(!session)return authView();
-  const {data}=await db.from('staff').select('*').eq('id',session.user.id).maybeSingle();
-  if(!data){await db.auth.signOut();return authView()}
-  me=data;me.role=='admin'?adminView():staffView()}
-
-// ---------- Login / Register ----------
-function authView(m='login'){const r=m=='reg';
-  render(`<div class=box><h1>🏫 Staff Attendance</h1><div class=tabs>
-  <button class="${r?'':'on'}" onclick="authView('login')">Login</button><button class="${r?'on':''}" onclick="authView('reg')">Register</button></div>
-  <form class=card onsubmit="auth(event,${r});return false">
-  ${r?`<input name=full_name placeholder="Full name" required><input name=phone type=tel placeholder="Phone number" required>`:''}
-  <input name=sid placeholder="Staff ID" required autocapitalize=off>
-  ${r?`<select name=department required><option value="">Select department</option>${DEPTS.map(d=>`<option>${d}</option>`).join('')}</select>`:''}
-  <input name=pw type=password placeholder="Password (min. 6 characters)" minlength=6 required>
-  <button class=pri>${r?'Create account':'Login'}</button><p id=msg></p></form></div>`)}
-async function auth(e,reg){const f=fd(e),msg=$('#msg');msg.textContent='Please wait…';const email=em(f.sid);
-  const r=reg?await db.auth.signUp({email,password:f.pw,options:{data:{full_name:f.full_name.trim(),phone:f.phone,staff_id:f.sid.trim(),department:f.department}}})
-    :await db.auth.signInWithPassword({email,password:f.pw});
-  if(r.error){const x=r.error.message;msg.textContent=/Database error|already/i.test(x)?'This Staff ID is already registered.':/Invalid login/i.test(x)?'Wrong Staff ID or password.':x;return}
-  if(!r.data.session){msg.textContent='Account created. Please login.';return}init()}
-
-// ---------- Staff ----------
-async function staffView(){
-  const [a,l]=await Promise.all([db.from('attendance').select('*').eq('staff_id',me.id).order('date',{ascending:false}).limit(90),
-    db.from('leave_requests').select('*').eq('staff_id',me.id).order('created_at',{ascending:false}).limit(20)]);
-  const att=a.data||[],lv=l.data||[],t=att.find(x=>x.date==today()),days=att.filter(x=>x.date.startsWith(today().slice(0,7))).length;
-  const st=!t?'Not clocked in yet':t.clock_out?`Done for today · Out ${tm(t.clock_out)}`:`Clocked in at ${tm(t.clock_in)}${t.status=='late'?' (late)':''}`;
-  const btn=!t?`<button class="big in" onclick="clk('clock_in')">CLOCK IN</button>`:!t.clock_out?`<button class="big out" onclick="clk('clock_out')">CLOCK OUT</button>`:`<button class=big disabled>✔ Done for today</button>`;
-  render(hdr(me.full_name)+`<main><div class=card><div class=clock id=ck></div><p class=st>${st}</p>${btn}</div>
-  <div class=cards><div class=c><b>${days}</b>Days present this month</div><div class=c><b>${lv.filter(x=>x.status=='pending').length}</b>Pending requests</div></div>
-  <div class=card><h3>Request leave / permission</h3><form onsubmit="leave(event);return false"><select name=type><option>Leave</option><option>Permission</option></select>
-  <label>From</label><input type=date name=date min="${today()}" required><label>To (optional)</label><input type=date name=end_date>
-  <textarea name=reason placeholder="Reason" required></textarea><button class=pri>Submit request</button></form></div>
-  <div class=card><h3>My requests</h3>${lv.map(x=>`<div class=row><span>${x.type} · ${x.date}${x.end_date?' → '+x.end_date:''}<small>${esc(x.reason)}${x.admin_comment?'<br>💬 '+esc(x.admin_comment):''}</small></span><i class="tag ${x.status}">${x.status}</i></div>`).join('')||'<small>None yet</small>'}</div>
-  <div class=card><h3>Attendance history</h3>${att.map(x=>`<div class=row><span>${x.date}<small>In ${tm(x.clock_in)} · Out ${tm(x.clock_out)}</small></span><i class="tag ${x.status}">${x.status}</i></div>`).join('')||'<small>No records yet</small>'}</div></main>`);
-  clearInterval(T);const k=()=>{const e=$('#ck');if(e)e.textContent=new Date().toLocaleTimeString('en-NG',{timeZone:tz})};k();T=setInterval(k,1000)}
-async function clk(fn){const {error}=await db.rpc(fn);toast(error?(error.code=='23505'?'You already clocked in today':error.message):'Done ✔');staffView()}
-async function leave(e){const f=fd(e);if(!f.end_date)delete f.end_date;const {error}=await db.from('leave_requests').insert({...f,staff_id:me.id});toast(error?error.message:'Request sent');staffView()}
-
-// ---------- Admin ----------
-async function adminView(){
-  const [s,a,l]=await Promise.all([db.from('staff').select('*').order('full_name'),db.from('attendance').select('*').eq('date',A.date),
-    db.from('leave_requests').select('*,staff(full_name,staff_id)').order('created_at',{ascending:false}).limit(100)]);
-  S=s.data||[];AT=a.data||[];LV=l.data||[];draw()}
-const rows=()=>S.filter(x=>x.role=='staff').map(x=>{const a=AT.find(t=>t.staff_id==x.id),
-  v=LV.find(v=>v.staff_id==x.id&&v.status=='approved'&&v.date<=A.date&&(v.end_date||v.date)>=A.date);return{...x,a,st:a?a.status:v?'leave':'absent'}});
-function tbl(){const q=A.q.toLowerCase();
-  const r=rows().filter(r=>(!A.dept||r.department==A.dept)&&(r.full_name+r.staff_id).toLowerCase().includes(q));
-  return `<table><tr><th>Staff</th><th>Dept</th><th>In</th><th>Out</th><th>Status</th></tr>${r.map(r=>`<tr><td>${esc(r.full_name)}<small>${esc(r.staff_id)}</small></td><td>${esc(r.department)}</td><td>${tm(r.a?.clock_in)}</td><td>${tm(r.a?.clock_out)}</td><td><i class="tag ${r.st}">${r.st}</i></td></tr>`).join('')||'<tr><td colspan=5>No staff found</td></tr>'}</table>`}
-function draw(){const r=rows(),n=k=>r.filter(x=>x.st==k).length,pend=LV.filter(v=>v.status=='pending'),t=A.tab;
-  let body='';
-  if(t=='today')body=`<input type=date value="${A.date}" onchange="A.date=this.value;adminView()">
-  <div class=cards style="grid-template-columns:1fr 1fr"><div class=c><b>${n('present')+n('late')}</b>Present</div><div class=c><b>${n('absent')}</b>Absent</div><div class=c><b>${n('late')}</b>Late</div><div class=c><b>${n('leave')}</b>On leave</div></div>
-  <div class=card><div class=two><input placeholder="🔍 Search name / ID" value="${esc(A.q)}" oninput="A.q=this.value;$('#tbl').innerHTML=tbl()">
-  <select onchange="A.dept=this.value;$('#tbl').innerHTML=tbl()"><option value="">All departments</option>${DEPTS.map(d=>`<option ${A.dept==d?'selected':''}>${d}</option>`).join('')}</select></div>
-  <div class=sc id=tbl>${tbl()}</div></div>
-  <div class=card><h3>Export attendance</h3><div class=two><input type=month id=mon value="${today().slice(0,7)}"><button class=pri style="margin:5px 0" onclick="exp()">Download CSV</button></div><small>Opens in Excel</small></div>`;
-  if(t=='leave')body=`<div class=card><h3>Pending requests</h3>${pend.map(v=>`<div style="padding:8px 0;border-bottom:1px solid #eef"><b>${esc(v.staff?.full_name)}</b> · ${v.type}<small>${v.date}${v.end_date?' → '+v.end_date:''}<br>${esc(v.reason)}</small>
-  <input id=c${v.id} placeholder="Comment (optional)"><div class=two><button class=mini style="background:#157a3c" onclick="decide(${v.id},'approved')">Approve</button><button class=mini style="background:#c0392b" onclick="decide(${v.id},'rejected')">Reject</button></div></div>`).join('')||'<small>No pending requests</small>'}</div>
-  <div class=card><h3>Recent decisions</h3>${LV.filter(v=>v.status!='pending').slice(0,20).map(v=>`<div class=row><span>${esc(v.staff?.full_name)} · ${v.date}<small>${esc(v.admin_comment||'')}</small></span><i class="tag ${v.status}">${v.status}</i></div>`).join('')||'<small>None</small>'}</div>`;
-  if(t=='staff')body=`<div class=card><h3>Add staff</h3><form onsubmit="addStaff(event);return false"><input name=full_name placeholder="Full name" required><input name=phone type=tel placeholder="Phone" required><input name=sid placeholder="Staff ID" required>
-  <select name=department required><option value="">Department</option>${DEPTS.map(d=>`<option>${d}</option>`).join('')}</select><input name=pw placeholder="Temporary password" minlength=6 required><button class=pri>Add staff</button></form></div>
-  <div class=card><h3>All staff (${S.length})</h3>${S.map(x=>`<div class=row><span>${esc(x.full_name)} ${x.role=='admin'?'⭐':''}<small>${esc(x.staff_id)} · ${esc(x.department)} · ${esc(x.phone)}</small></span>${x.id==me.id?'':`<button class=mini style="background:#c0392b" onclick="rm('${x.id}')">Remove</button>`}</div>`).join('')}</div>`;
-  render(hdr('Admin · '+me.full_name)+`<main><div class=tabs>${[['today','Today'],['leave','Leave'+(pend.length?` (${pend.length})`:'')],['staff','Staff']].map(([k,l])=>`<button class="${t==k?'on':''}" onclick="A.tab='${k}';draw()">${l}</button>`).join('')}</div>${body}</main>`)}
-async function decide(id,status){const {error}=await db.from('leave_requests').update({status,admin_comment:$('#c'+id).value}).eq('id',id);toast(error?error.message:'Saved');adminView()}
-async function rm(id){if(!confirm('Remove this staff member and all their records?'))return;const {error}=await db.rpc('remove_staff',{p_id:id});toast(error?error.message:'Removed');adminView()}
-async function addStaff(e){const f=fd(e),c2=createClient(URL_,KEY,{auth:{persistSession:false,autoRefreshToken:false,storageKey:'tmp'}});
-  const {error}=await c2.auth.signUp({email:em(f.sid),password:f.pw,options:{data:{full_name:f.full_name,phone:f.phone,staff_id:f.sid.trim(),department:f.department}}});
-  toast(error?error.message:'Staff added');if(!error)adminView()}
-async function exp(){const m=$('#mon').value,[y,mo]=m.split('-'),end=new Date(y,mo,0).getDate();
-  const {data,error}=await db.from('attendance').select('*,staff(full_name,staff_id,department)').gte('date',m+'-01').lte('date',`${m}-${end}`).order('date');
-  if(error)return toast(error.message);const q=v=>`"${String(v??'').replace(/"/g,'""')}"`;
-  const csv=['Staff ID,Name,Department,Date,Clock In,Clock Out,Status',...data.map(r=>[r.staff.staff_id,r.staff.full_name,r.staff.department,r.date,tm(r.clock_in),tm(r.clock_out),r.status].map(q).join(','))].join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download=`attendance-${m}.csv`;a.click()}
-init();
+const safe=u=>/^https?:\/\//.test(u||'')?esc(u):'#';
+const fmt=d=>new Date(d).toLocaleDateString('en-NG',{day:'numeric',month:'long',year:'numeric'});
+const PH=['08140418681','08035837010'],WA='2348140418681';
+let P=[];const of=t=>P.filter(p=>p.type==t);
+const card=(p,blog)=>`<article class=card>${p.image_url?`<img class=pi src="${safe(p.image_url)}" alt="">`:''}<small>${fmt(p.created_at)}</small><h3>${esc(p.title)}</h3>
+${blog?`<p class=body>${esc(p.body.slice(0,140))}${p.body.length>140?'…':''}</p>${p.body.length>140?`<details><summary>Read more</summary><p class=body>${esc(p.body)}</p></details>`:''}`:`<p class=body>${esc(p.body)}</p>`}
+${p.link_url?`<a class=btn href="${safe(p.link_url)}" target=_blank rel=noopener>View original post</a>`:''}</article>`;
+const list=(t,blog,empty)=>of(t).map(p=>card(p,blog)).join('')||`<p>${empty}</p>`;
+const V={
+ home:()=>`<div class=hero><img src=logo.png alt=""><h1>Redeemers Private School</h1><p>Knowledge and the Fear of God</p>
+  <a class=btn href="tel:${PH[0]}">📞 Call us</a><a class="btn g" href="https://wa.me/${WA}">WhatsApp</a></div>
+  <div class=in><main><h2>Latest announcements</h2><div class=grid>${of('announcement').slice(0,3).map(p=>card(p)).join('')||'<p>No announcements yet.</p>'}</div>
+  <h2>From our blog</h2><div class=grid>${of('blog').slice(0,2).map(p=>card(p,1)).join('')||'<p>No posts yet.</p>'}</div></main></div>`,
+ news:()=>`<div class=in><main><h2>Announcements</h2><div class=grid>${list('announcement',0,'No announcements yet.')}</div></main></div>`,
+ blog:()=>`<div class=in><main><h2>Blog</h2><div class=grid>${list('blog',1,'No blog posts yet.')}</div></main></div>`,
+ social:()=>`<div class=in><main><h2>Social</h2><div class=grid>${list('social',0,'No social posts yet.')}</div>
+  <p>${Object.entries(SOCIAL).filter(([,u])=>u).map(([n,u])=>`<a class=btn href="${safe(u)}" target=_blank rel=noopener>Follow on ${n}</a>`).join('')}</p></main></div>`,
+ contact:()=>`<div class=in><main><h2>Contact us</h2><div class=card><p><b>Address</b><br>Opp. Iyakwari Hotel, Holiness Road, Ado, New Karu.</p>
+  <p><b>Phone</b><br>${PH.map(n=>`<a href="tel:${n}">${n}</a>`).join(' · ')}</p>
+  <a class="btn" style="background:#25d366" href="https://wa.me/${WA}">Chat on WhatsApp</a>
+  <a class=btn href="https://www.google.com/maps/search/?api=1&query=Iyakwari+Hotel+Ado+New+Karu" target=_blank rel=noopener>View on map</a></div></main></div>`};
+const NAV=[['home','Home'],['news','Announcements'],['blog','Blog'],['social','Social'],['contact','Contact']];
+function show(){const k=location.hash.slice(1);const v=V[k]?k:'home';
+  $('#nav').innerHTML=NAV.map(([i,l])=>`<a href="#${i}" class="${i==v?'on':''}">${l}</a>`).join('');$('#app').innerHTML=V[v]();scrollTo(0,0)}
+$('#yr').textContent=new Date().getFullYear();
+addEventListener('hashchange',show);
+db.from('posts').select('*').eq('published',true).order('created_at',{ascending:false}).limit(60).then(r=>{P=r.data||[];show()});show();
 </script></body></html>

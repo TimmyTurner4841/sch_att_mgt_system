@@ -69,7 +69,4 @@ begin
   if not is_admin() or p_id=auth.uid() then raise exception 'Not allowed'; end if;
   delete from auth.users where id=p_id;
 end $$;
-
--- AFTER the Director and Head of ICT have registered in the app, run this
--- (replace with their real Staff IDs) to make them admins:
--- update staff set role='admin' where staff_id in ('DIRECTOR01','ICT01');
+update staff set role='admin' where staff_id in ('HIT1','ICT01');
