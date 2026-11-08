@@ -12,6 +12,9 @@ a{color:#1e4fa3}header{background:#fff;border-bottom:3px solid #1e4fa3;position:
 nav a.on{color:#1e4fa3;border-color:#1e4fa3}
 .hero{background:linear-gradient(135deg,#1e4fa3,#12306b);color:#fff;text-align:center;padding:36px 16px}
 .hero img{height:120px;background:#fff;border-radius:14px;padding:6px}.hero h1{margin:12px 0 4px;font-size:28px}.hero p{margin:0 0 16px;opacity:.9;font-style:italic}
+.chip{display:inline-block;background:#e3ecfb;color:#1e4fa3;font-weight:600;padding:6px 14px;border-radius:20px;margin:4px 4px 4px 0}
+.grid.t{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}.tc{text-align:center}.tc img,.ph{width:110px;height:110px;border-radius:50%;object-fit:cover;margin:0 auto 8px;display:block}
+.ph{background:#e3ecfb;color:#1e4fa3;font-size:40px;font-weight:700;display:flex;align-items:center;justify-content:center}.role{color:#1e4fa3;font-weight:600;margin:0;font-size:14px}
 .btn{display:inline-block;background:#1e4fa3;color:#fff!important;padding:10px 18px;border-radius:8px;text-decoration:none;font-weight:600;margin:4px}
 .hero .btn{background:#fff;color:#1e4fa3!important}.hero .btn.g{background:#25d366;color:#fff!important}
 main{padding:18px 0 30px}h2{color:#1e4fa3;margin:22px 0 10px}
@@ -30,6 +33,15 @@ footer{background:#12306b;color:#cfe0ff;text-align:center;padding:18px;font-size
 // ====== SETTINGS: same two Supabase values as staff.html ======
 const URL_='https://lcipveuaxjiilvqymqob.supabase.co', KEY='sb_publishable_pOFn7CtPewesWKGpQUo6MA_o-MJ_tyZ';
 const SOCIAL={Facebook:'',Instagram:''};   // add your page links, e.g. Facebook:'https://facebook.com/yourpage'
+// ====== ABOUT US: fill these in. Anything left empty ('' or []) is simply not shown ======
+const ABOUT={
+ story:'',                 // Our story / brief history of the school
+ mission:'',               // Mission statement
+ vision:'',                // Vision statement
+ values:[],                // e.g. ['Godliness','Excellence','Discipline']
+ principalName:'',         // e.g. 'Mrs A. Adeyemi, Principal'
+ principal:''              // A short welcome message from the Principal
+};
 // ==============================================================
 if(!/^https:\/\/.+\.supabase\.co/.test(URL_)||KEY.startsWith('PASTE')){document.body.innerHTML='<p style="padding:24px;font:16px system-ui"><b>Setup needed:</b> paste your Supabase URL and key into the settings lines at the top of this file (keep the quote marks), then upload it again.</p>';throw new Error('Supabase settings missing')}
 const {createClient}=supabase,db=createClient(URL_,KEY),$=s=>document.querySelector(s);
@@ -37,7 +49,7 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const safe=u=>/^https?:\/\//.test(u||'')?esc(u):'#';
 const fmt=d=>new Date(d).toLocaleDateString('en-NG',{day:'numeric',month:'long',year:'numeric'});
 const PH=['08140418681','08035837010'],WA='2348140418681';
-let P=[];const of=t=>P.filter(p=>p.type==t);
+let P=[],TM=[];const of=t=>P.filter(p=>p.type==t);
 const card=(p,blog)=>`<article class=card>${p.image_url?`<img class=pi src="${safe(p.image_url)}" alt="">`:''}<small>${fmt(p.created_at)}</small><h3>${esc(p.title)}</h3>
 ${blog?`<p class=body>${esc(p.body.slice(0,140))}${p.body.length>140?'…':''}</p>${p.body.length>140?`<details><summary>Read more</summary><p class=body>${esc(p.body)}</p></details>`:''}`:`<p class=body>${esc(p.body)}</p>`}
 ${p.link_url?`<a class=btn href="${safe(p.link_url)}" target=_blank rel=noopener>View original post</a>`:''}</article>`;
@@ -51,14 +63,21 @@ const V={
  blog:()=>`<div class=in><main><h2>Blog</h2><div class=grid>${list('blog',1,'No blog posts yet.')}</div></main></div>`,
  social:()=>`<div class=in><main><h2>Social</h2><div class=grid>${list('social',0,'No social posts yet.')}</div>
   <p>${Object.entries(SOCIAL).filter(([,u])=>u).map(([n,u])=>`<a class=btn href="${safe(u)}" target=_blank rel=noopener>Follow on ${n}</a>`).join('')}</p></main></div>`,
- contact:()=>`<div class=in><main><h2>Contact us</h2><div class=card><p><b>Address</b><br>Opp. Iyakwari Hotel, Holiness Road, Ado, New Karu.</p>
+ team:()=>{const g=(c,h)=>{const m=TM.filter(x=>x.category==c);return m.length?`<h2>${h}</h2><div class="grid t">${m.map(x=>`<div class="card tc">${x.photo_url?`<img src="${safe(x.photo_url)}" alt="">`:`<div class=ph>${esc(x.name.trim()[0]||'?')}</div>`}<h3>${esc(x.name)}</h3><p class=role>${esc(x.role)}</p></div>`).join('')}</div>`:''};
+  return `<div class=in><main>${g('management','Meet the Management')+g('staff','Meet Our Staff')||'<h2>Our Team</h2><p>Coming soon.</p>'}</main></div>`},
+ about:()=>`<div class=in><main><h2>About Us</h2>
+  <div class=card><p><b>Our motto</b><br><i>Knowledge and the Fear of God</i></p>${ABOUT.story?`<p class=body>${esc(ABOUT.story)}</p>`:''}</div>
+  ${ABOUT.mission||ABOUT.vision?`<div class=grid style="margin-top:14px">${ABOUT.mission?`<div class=card><h3>Our Mission</h3><p class=body>${esc(ABOUT.mission)}</p></div>`:''}${ABOUT.vision?`<div class=card><h3>Our Vision</h3><p class=body>${esc(ABOUT.vision)}</p></div>`:''}</div>`:''}
+  ${ABOUT.values.length?`<h2>Our Core Values</h2><div class=card>${ABOUT.values.map(v=>`<span class=chip>${esc(v)}</span>`).join('')}</div>`:''}
+  ${ABOUT.principal?`<h2>Message from the Principal</h2><div class=card><p class=body>${esc(ABOUT.principal)}</p>${ABOUT.principalName?`<b>— ${esc(ABOUT.principalName)}</b>`:''}</div>`:''}
+  <h2>Contact us</h2><div class=card><p><b>Address</b><br>Opp. Iyakwari Hotel, Holiness Road, Ado, New Karu.</p>
   <p><b>Phone</b><br>${PH.map(n=>`<a href="tel:${n}">${n}</a>`).join(' · ')}</p>
   <a class="btn" style="background:#25d366" href="https://wa.me/${WA}">Chat on WhatsApp</a>
   <a class=btn href="https://www.google.com/maps/search/?api=1&query=Iyakwari+Hotel+Ado+New+Karu" target=_blank rel=noopener>View on map</a></div></main></div>`};
-const NAV=[['home','Home'],['news','Announcements'],['blog','Blog'],['social','Social'],['contact','Contact']];
-function show(){const k=location.hash.slice(1);const v=V[k]?k:'home';
+const NAV=[['home','Home'],['news','Announcements'],['blog','Blog'],['social','Social'],['team','Our Team'],['about','About Us']];
+function show(){let k=location.hash.slice(1);if(k=='contact')k='about';const v=V[k]?k:'home';
   $('#nav').innerHTML=NAV.map(([i,l])=>`<a href="#${i}" class="${i==v?'on':''}">${l}</a>`).join('');$('#app').innerHTML=V[v]();scrollTo(0,0)}
 $('#yr').textContent=new Date().getFullYear();
 addEventListener('hashchange',show);
-db.from('posts').select('*').eq('published',true).order('created_at',{ascending:false}).limit(60).then(r=>{P=r.data||[];show()});show();
+Promise.all([db.from('posts').select('*').eq('published',true).order('created_at',{ascending:false}).limit(60),db.from('team').select('*').order('sort_order').order('created_at')]).then(([r,t])=>{P=r.data||[];TM=t.data||[];show()});show();
 </script></body></html>

@@ -12,7 +12,7 @@ h1{color:#1e4fa3;text-align:center;font-size:22px}h3{margin:0 0 8px;color:#1e4fa
 input,select,textarea{width:100%;padding:11px;margin:5px 0;border:1px solid #c5d3ea;border-radius:8px;font:inherit;background:#fff}
 label{font-size:12px;color:#557}button{font:inherit;cursor:pointer}
 .pri{width:100%;background:#1e4fa3;color:#fff;border:0;border-radius:8px;padding:12px;font-weight:600;margin-top:6px}
-.tabs{display:flex;gap:6px;margin-bottom:10px}.tabs button{flex:1;padding:10px;border:1px solid #1e4fa3;background:#fff;color:#1e4fa3;border-radius:8px;font-weight:600}
+.tabs{display:flex;gap:6px;margin-bottom:10px}.tabs button{flex:1;padding:10px 4px;font-size:13px;border:1px solid #1e4fa3;background:#fff;color:#1e4fa3;border-radius:8px;font-weight:600}
 .tabs button.on{background:#1e4fa3;color:#fff}
 .clock{font-size:34px;font-weight:700;text-align:center;color:#1e4fa3}.st{text-align:center;margin:4px 0 12px}
 .big{width:100%;padding:26px;font-size:24px;font-weight:800;border:0;border-radius:14px;color:#fff;background:#999}
@@ -41,7 +41,7 @@ const em=i=>i.trim().toLowerCase().replace(/[^a-z0-9]/g,'-')+'@school-staff.app'
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fd=e=>Object.fromEntries(new FormData(e.target));
 const render=h=>$('#app').innerHTML=h;
-let me,T,P=[],S=[],AT=[],LV=[],A={tab:'today',date:today(),q:'',dept:''};
+let me,T,TM=[],P=[],S=[],AT=[],LV=[],A={tab:'today',date:today(),q:'',dept:''};
 function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2800)}
 const hdr=t=>`<header><span style="display:flex;align-items:center;gap:8px"><img src=logo.png alt="" style="height:36px;background:#fff;border-radius:6px"><span><b style="font-size:14px">Redeemers Private School</b><small style="color:#cfe0ff">${esc(t)}</small></span></span><button onclick="logout()">Logout</button></header>`;
 async function logout(){await db.auth.signOut();me=null;authView()}
@@ -87,9 +87,9 @@ async function leave(e){const f=fd(e);if(!f.end_date)delete f.end_date;const {er
 
 // ---------- Admin ----------
 async function adminView(){
-  const [s,a,l,p]=await Promise.all([db.from('staff').select('*').order('full_name'),db.from('attendance').select('*').eq('date',A.date),
-    db.from('leave_requests').select('*,staff(full_name,staff_id)').order('created_at',{ascending:false}).limit(100),db.from('posts').select('*').order('created_at',{ascending:false}).limit(50)]);
-  P=p.data||[];S=s.data||[];AT=a.data||[];LV=l.data||[];draw()}
+  const [s,a,l,p,tb]=await Promise.all([db.from('staff').select('*').order('full_name'),db.from('attendance').select('*').eq('date',A.date),
+    db.from('leave_requests').select('*,staff(full_name,staff_id)').order('created_at',{ascending:false}).limit(100),db.from('posts').select('*').order('created_at',{ascending:false}).limit(50),db.from('team').select('*').order('category').order('sort_order').order('created_at')]);
+  P=p.data||[];TM=tb.data||[];S=s.data||[];AT=a.data||[];LV=l.data||[];draw()}
 const rows=()=>S.filter(x=>x.role=='staff').map(x=>{const a=AT.find(t=>t.staff_id==x.id),
   v=LV.find(v=>v.staff_id==x.id&&v.status=='approved'&&v.date<=A.date&&(v.end_date||v.date)>=A.date);return{...x,a,st:a?a.status:v?'leave':'absent'}});
 function tbl(){const q=A.q.toLowerCase();
@@ -109,7 +109,7 @@ function draw(){const r=rows(),n=k=>r.filter(x=>x.st==k).length,pend=LV.filter(v
   if(t=='staff')body=`<div class=card><h3>Add staff</h3><form onsubmit="addStaff(event);return false"><input name=full_name placeholder="Full name" required><input name=phone type=tel placeholder="Phone" required><input name=sid placeholder="Staff ID" required>
   <select name=department required><option value="">Department</option>${DEPTS.map(d=>`<option>${d}</option>`).join('')}</select><input name=pw placeholder="Temporary password" minlength=6 required><button class=pri>Add staff</button></form></div>
   <div class=card><h3>All staff (${S.length})</h3>${S.map(x=>`<div class=row><span>${esc(x.full_name)} ${x.role=='admin'?'⭐':''}<small>${esc(x.staff_id)} · ${esc(x.department)} · ${esc(x.phone)}</small></span>${x.id==me.id?'':`<button class=mini style="background:#c0392b" onclick="rm('${x.id}')">Remove</button>`}</div>`).join('')}</div>`;
-  if(t=='posts')body=postsHtml();render(hdr('Admin · '+me.full_name)+`<main><div class=tabs>${[['today','Today'],['leave','Leave'+(pend.length?` (${pend.length})`:'')],['staff','Staff'],['posts','Posts']].map(([k,l])=>`<button class="${t==k?'on':''}" onclick="A.tab='${k}';draw()">${l}</button>`).join('')}</div>${body}</main>`)}
+  if(t=='posts')body=postsHtml();if(t=='team')body=teamHtml();render(hdr('Admin · '+me.full_name)+`<main><div class=tabs>${[['today','Today'],['leave','Leave'+(pend.length?` (${pend.length})`:'')],['staff','Staff'],['posts','Posts'],['team','Team']].map(([k,l])=>`<button class="${t==k?'on':''}" onclick="A.tab='${k}';draw()">${l}</button>`).join('')}</div>${body}</main>`)}
 async function decide(id,status){const {error}=await db.from('leave_requests').update({status,admin_comment:$('#c'+id).value}).eq('id',id);toast(error?error.message:'Saved');adminView()}
 async function rm(id){if(!confirm('Remove this staff member and all their records?'))return;const {error}=await db.rpc('remove_staff',{p_id:id});toast(error?error.message:'Removed');adminView()}
 async function addStaff(e){const f=fd(e),c2=createClient(URL_,KEY,{auth:{persistSession:false,autoRefreshToken:false,storageKey:'tmp'}});
@@ -130,5 +130,14 @@ async function addPost(e){const f=fd(e),b=$('#pb');b.disabled=true;b.textContent
     if(u.error){toast(u.error.message);b.disabled=false;b.textContent='Publish';return}image_url=db.storage.from('posts').getPublicUrl(path).data.publicUrl}
   const {error}=await db.from('posts').insert({type:f.type,title:f.title,body:f.body,link_url:f.link_url||null,image_url});toast(error?error.message:'Published ✔');adminView()}
 async function delPost(id){if(!confirm('Delete this post?'))return;const {error}=await db.from('posts').delete().eq('id',id);toast(error?error.message:'Deleted');adminView()}
+const teamHtml=()=>`<div class=card><h3>Add team member (shown on the public site)</h3><form onsubmit="addMember(event);return false"><input name=name placeholder="Full name, e.g. Mrs A. Adeyemi" required>
+<input name=role placeholder="Portfolio, e.g. Vice Principal (Academics)" required><select name=category><option value=management>Management</option><option value=staff>Staff</option></select>
+<input name=sort_order type=number min=1 placeholder="Display order (1 = first, optional)"><label>Photo (square or portrait works best)</label><input type=file name=img accept="image/*"><button class=pri id=tb>Add to website</button></form></div>
+<div class=card><h3>Current team (${TM.length})</h3>${TM.map(x=>`<div class=row><span>${esc(x.name)}<small>${esc(x.role)} · ${x.category=='management'?'Management':'Staff'}</small></span><button class=mini style="background:#c0392b" onclick="delMember(${x.id})">Remove</button></div>`).join('')||'<small>No one added yet</small>'}</div>`;
+async function addMember(e){const f=fd(e),b=$('#tb');b.disabled=true;b.textContent='Saving…';let photo_url=null;const file=e.target.img.files[0];
+  if(file){const path='team-'+Date.now()+'-'+file.name.replace(/[^a-z0-9.]/gi,'_'),u=await db.storage.from('posts').upload(path,file);
+    if(u.error){toast(u.error.message);b.disabled=false;b.textContent='Add to website';return}photo_url=db.storage.from('posts').getPublicUrl(path).data.publicUrl}
+  const {error}=await db.from('team').insert({name:f.name,role:f.role,category:f.category,sort_order:+f.sort_order||0,photo_url});toast(error?error.message:'Added ✔');adminView()}
+async function delMember(id){if(!confirm('Remove this person from the website?'))return;const {error}=await db.from('team').delete().eq('id',id);toast(error?error.message:'Removed');adminView()}
 init();
 </script></body></html>
